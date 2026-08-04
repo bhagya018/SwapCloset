@@ -1,0 +1,155 @@
+{
+  "users": [
+    {
+      "id": "u1",
+      "name": "Aanya Patel",
+      "email": "aanya@clothx.com",
+      "passwordHash": "demo-user-123",
+      "role": "user",
+      "city": "Pune",
+      "bio": "Minimalist wardrobe swaps for workwear and weekend pieces.",
+      "swapHistory": [
+        "r1"
+      ]
+    },
+    {
+      "id": "u2",
+      "name": "Rohan Mehta",
+      "email": "rohan@clothx.com",
+      "passwordHash": "demo-user-123",
+      "role": "user",
+      "city": "Mumbai",
+      "bio": "Streetwear collector open to local exchange and courier swaps.",
+      "swapHistory": []
+    },
+    {
+      "id": "admin1",
+      "name": "Marketplace Admin",
+      "email": "admin@clothx.com",
+      "passwordHash": "admin-12345",
+      "role": "admin",
+      "city": "Bengaluru",
+      "bio": "Monitoring listings, disputes, and platform health.",
+      "swapHistory": []
+    }
+  ],
+  "items": [
+    {
+      "id": "i1",
+      "ownerId": "u1",
+      "title": "Olive Utility Jacket",
+      "category": "Jacket",
+      "size": "M",
+      "brand": "Zara",
+      "condition": "Excellent",
+      "description": "Lightweight jacket with brass hardware and clean lining. Worn fewer than 5 times.",
+      "city": "Pune",
+      "estimatedValue": 62,
+      "images": [
+        "https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isAvailable": true,
+      "createdAt": "2026-07-10T08:30:00.000Z"
+    },
+    {
+      "id": "i2",
+      "ownerId": "u2",
+      "title": "Relaxed Indigo Jeans",
+      "category": "Jeans",
+      "size": "32",
+      "brand": "Levi's",
+      "condition": "Like New",
+      "description": "Straight cut denim with no fading, ideal for everyday wear.",
+      "city": "Mumbai",
+      "estimatedValue": 56,
+      "images": [
+        "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isAvailable": true,
+      "createdAt": "2026-07-13T09:15:00.000Z"
+    },
+    {
+      "id": "i3",
+      "ownerId": "u2",
+      "title": "Cream Slip Dress",
+      "category": "Dress",
+      "size": "S",
+      "brand": "Mango",
+      "condition": "Good",
+      "description": "Silky midi dress with adjustable straps and a soft lining.",
+      "city": "Mumbai",
+      "estimatedValue": 37,
+      "images": [
+        "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isAvailable": true,
+      "createdAt": "2026-07-12T11:20:00.000Z"
+    },
+    {
+      "id": "i4",
+      "ownerId": "u1",
+      "title": "Running Sneakers",
+      "category": "Shoes",
+      "size": "38",
+      "brand": "Nike",
+      "condition": "Excellent",
+      "description": "Breathable trainers with fresh insoles and intact grip.",
+      "city": "Pune",
+      "estimatedValue": 61,
+      "images": [
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isAvailable": true,
+      "createdAt": "2026-07-17T07:45:00.000Z"
+    },
+    {
+      "id": "i5",
+      "ownerId": "u2",
+      "title": "Striped Oxford Shirt",
+      "category": "Shirt",
+      "size": "L",
+      "brand": "Uniqlo",
+      "condition": "Fair",
+      "description": "Crisp cotton shirt for office or casual layering.",
+      "city": "Mumbai",
+      "estimatedValue": 21,
+      "images": [
+        "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "isAvailable": true,
+      "createdAt": "2026-07-19T10:00:00.000Z"
+    }
+  ],
+  "requests": [
+    {
+      "id": "r1",
+      "fromUserId": "u2",
+      "toUserId": "u1",
+      "offeredItemId": "i2",
+      "requestedItemId": "i1",
+      "status": "Accepted",
+      "proposedNote": "Would swap the Levi's jeans plus a courier top-up for the jacket.",
+      "proposedCashValue": 4,
+      "createdAt": "2026-07-20T12:00:00.000Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "requestId": "r1",
+      "senderId": "u2",
+      "message": "Happy to ship first if you confirm the fit details.",
+      "createdAt": "2026-07-20T12:05:00.000Z"
+    },
+    {
+      "id": "m2",
+      "requestId": "r1",
+      "senderId": "u1",
+      "message": "That works. I can send the jacket on the same day you share tracking.",
+      "createdAt": "2026-07-20T12:10:00.000Z"
+    }
+  ],
+  "session": {
+    "userId": "user_a5kma1va"
+  }
+}
