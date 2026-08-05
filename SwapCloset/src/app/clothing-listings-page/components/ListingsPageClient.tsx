@@ -55,20 +55,20 @@ export default function ListingsPageClient() {
     const loadListings = () => {
       try {
         const savedListings = JSON.parse(localStorage.getItem('userListings') || '[]');
-        console.log('ListingsPage - Loaded user listings:', savedListings.length);
+        console.info('ListingsPage - Loaded user listings:', savedListings.length);
         setUserListings(savedListings);
       } catch (error) {
         console.error('ListingsPage - Error loading listings:', error);
         setUserListings([]);
       }
     };
-    
+
     loadListings();
     // Also listen for storage changes to update when new listings are added
     const handleStorageChange = () => loadListings();
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('localStorageUpdated', handleStorageChange);
-    
+
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('localStorageUpdated', handleStorageChange);
@@ -81,7 +81,7 @@ export default function ListingsPageClient() {
     if (searchQuery) {
       setSearch(searchQuery);
     }
-    
+
     // Handle nearby filter
     const filterParam = searchParams.get('filter');
     if (filterParam === 'nearby') {
@@ -130,8 +130,15 @@ export default function ListingsPageClient() {
   // Filter + sort listings
   const filteredListings = useMemo(() => {
     const allListings = [...LISTINGS, ...userListings];
-    console.log('Total listings before filter:', allListings.length, 'User listings:', userListings.length, 'Search term:', search);
-    
+    console.info(
+      'Total listings before filter:',
+      allListings.length,
+      'User listings:',
+      userListings.length,
+      'Search term:',
+      search
+    );
+
     let result = allListings.filter((l) => {
       if (
         search &&
@@ -153,7 +160,7 @@ export default function ListingsPageClient() {
       return true;
     });
 
-    console.log('Filtered listings count:', result.length);
+    console.info('Filtered listings count:', result.length);
 
     switch (sort) {
       case 'Value: High to Low':
@@ -191,13 +198,13 @@ export default function ListingsPageClient() {
       status: 'pending',
       createdAt: new Date().toISOString(),
     };
-    
+
     const existingRequests = JSON.parse(localStorage.getItem('swapRequests') || '[]');
     localStorage.setItem('swapRequests', JSON.stringify([...existingRequests, swapRequest]));
-    
+
     // Dispatch event to notify other components
     window.dispatchEvent(new Event('swapRequestsUpdated'));
-    
+
     toast.success(`Swap request sent to ${swapModalListing?.ownerName}!`);
     setSwapModalListing(null);
     setSwapMessage('');

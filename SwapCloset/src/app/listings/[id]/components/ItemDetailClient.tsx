@@ -1,6 +1,15 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Heart, MessageSquare, ArrowLeftRight, MapPin, Share2, Shield, Star } from 'lucide-react';
+import Image from 'next/image';
+import {
+  ArrowLeft,
+  Heart,
+  MessageSquare,
+  ArrowLeftRight,
+  MapPin,
+  Share2,
+  Star,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import Modal from '@/components/ui/Modal';
@@ -8,19 +17,63 @@ import Badge from '@/components/ui/Badge';
 import { LISTINGS, Listing } from '../../../clothing-listings-page/components/listingsData';
 import { MY_LISTINGS } from '../../../user-dashboard/components/dashboardData';
 
+interface ExtendedListing {
+  id: string;
+  title: string;
+  brand: string;
+  category: string;
+  size: string;
+  gender?: string;
+  condition: string;
+  conditionLabel?: string;
+  estimatedValue: number;
+  location?: string;
+  distance?: number;
+  distanceMiles?: number;
+  imageUrl?: string;
+  imageAlt?: string;
+  imageColor?: string;
+  availability?: string;
+  description?: string;
+  ownerName?: string;
+  ownerAvatar?: string;
+  ownerCity?: string;
+  owner?: {
+    name: string;
+    avatar: string;
+    location: string;
+    rating: number;
+    reviewCount: number;
+    memberSince: string;
+    responseRate: string;
+  };
+  rating?: number;
+  reviewCount?: number;
+  memberSince?: string;
+  responseRate?: string;
+  postedDaysAgo?: number;
+  status?: string;
+  views?: number;
+  swapRequests?: number;
+  postedDate?: string;
+  color?: string;
+}
+
 export default function ItemDetailClient({ listingId }: { listingId: string }) {
   const [isFavorited, setIsFavorited] = useState(false);
   const [swapModalOpen, setSwapModalOpen] = useState(false);
-  const [listing, setListing] = useState<any>(null);
+  const [listing, setListing] = useState<ExtendedListing | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadListing = () => {
       try {
         // First check localStorage for user listings
-        const userListings = JSON.parse(localStorage.getItem('userListings') || '[]');
-        const userListing = userListings.find((l: any) => l.id === listingId);
-        
+        const userListings = JSON.parse(
+          localStorage.getItem('userListings') || '[]'
+        ) as ExtendedListing[];
+        const userListing = userListings.find((l) => l.id === listingId);
+
         if (userListing) {
           setListing({
             id: userListing.id,
@@ -40,8 +93,8 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
             imageColor: userListing.color || '#4A90A4',
             imageUrl: userListing.imageUrl,
             owner: {
-              name: userListing.ownerName,
-              avatar: userListing.ownerAvatar,
+              name: userListing.ownerName || 'Unknown',
+              avatar: userListing.ownerAvatar || 'Unknown',
               location: userListing.ownerCity || 'Unknown',
               rating: 4.8,
               reviewCount: 23,
@@ -52,7 +105,7 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
           });
         } else {
           // Check MY_LISTINGS (dashboard data)
-          const myListing = MY_LISTINGS.find((l: any) => l.id === listingId);
+          const myListing = MY_LISTINGS.find((l) => l.id === listingId);
           if (myListing) {
             setListing({
               id: myListing.id,
@@ -125,14 +178,35 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
         setLoading(false);
       }
     };
-    
+
     loadListing();
   }, [listingId]);
 
   const similarListings = [
-    { id: 2, title: 'High-Waisted Mom Jeans', brand: 'Zara', size: '28', value: 35, color: '#E8B4B8' },
-    { id: 3, title: 'Vintage Denim Jacket', brand: 'Levi\'s', size: 'M', value: 55, color: '#8B7355' },
-    { id: 4, title: 'Cropped Straight Jeans', brand: 'H&M', size: '28', value: 25, color: '#5D6D7E' },
+    {
+      id: 2,
+      title: 'High-Waisted Mom Jeans',
+      brand: 'Zara',
+      size: '28',
+      value: 35,
+      color: '#E8B4B8',
+    },
+    {
+      id: 3,
+      title: 'Vintage Denim Jacket',
+      brand: "Levi's",
+      size: 'M',
+      value: 55,
+      color: '#8B7355',
+    },
+    {
+      id: 4,
+      title: 'Cropped Straight Jeans',
+      brand: 'H&M',
+      size: '28',
+      value: 25,
+      color: '#5D6D7E',
+    },
   ];
 
   const handleFavorite = () => {
@@ -161,7 +235,10 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
     return (
       <div className="text-center py-20">
         <p className="text-muted-foreground">Listing not found</p>
-        <Link href="/clothing-listings-page" className="text-primary hover:underline mt-2 inline-block">
+        <Link
+          href="/clothing-listings-page"
+          className="text-primary hover:underline mt-2 inline-block"
+        >
           Back to listings
         </Link>
       </div>
@@ -171,7 +248,10 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
   return (
     <div className="fade-in">
       {/* Back button */}
-      <Link href="/clothing-listings-page" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
+      <Link
+        href="/clothing-listings-page"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+      >
         <ArrowLeft size={16} />
         Back to listings
       </Link>
@@ -179,18 +259,27 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
         {/* Image Gallery */}
         <div>
-          <div className="aspect-square rounded-2xl overflow-hidden mb-4 relative" style={{ backgroundColor: listing.imageColor }}>
+          <div
+            className="aspect-square rounded-2xl overflow-hidden mb-4 relative"
+            style={{ backgroundColor: listing.imageColor }}
+          >
             {listing.imageUrl && (
-              <img 
-                src={listing.imageUrl} 
+              <Image
+                src={listing.imageUrl}
                 alt={listing.title}
+                width={400}
+                height={400}
                 className="w-full h-full object-cover"
                 onLoad={(e) => {
-                  (e.currentTarget.parentElement as HTMLElement).querySelector('.fallback-brand')?.classList.add('hidden');
+                  (e.currentTarget.parentElement as HTMLElement)
+                    .querySelector('.fallback-brand')
+                    ?.classList.add('hidden');
                 }}
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
-                  (e.currentTarget.parentElement as HTMLElement).querySelector('.fallback-brand')?.classList.remove('hidden');
+                  (e.currentTarget.parentElement as HTMLElement)
+                    .querySelector('.fallback-brand')
+                    ?.classList.remove('hidden');
                 }}
               />
             )}
@@ -207,15 +296,23 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
         <div>
           <div className="flex items-start justify-between mb-4">
             <div>
-              <Badge variant="active" className="mb-3">{listing.availability}</Badge>
-              <h1 className="text-2xl lg:text-3xl font-700 text-foreground mb-2">{listing.title}</h1>
-              <p className="text-lg text-muted-foreground">{listing.brand} · {listing.category}</p>
+              <Badge variant="active" className="mb-3">
+                {listing.availability}
+              </Badge>
+              <h1 className="text-2xl lg:text-3xl font-700 text-foreground mb-2">
+                {listing.title}
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                {listing.brand} · {listing.category}
+              </p>
             </div>
             <div className="flex gap-2">
               <button
                 onClick={handleFavorite}
                 className={`w-10 h-10 rounded-lg border flex items-center justify-center transition-colors ${
-                  isFavorited ? 'border-negative bg-negative/10 text-negative' : 'border-border bg-card text-muted-foreground hover:text-foreground'
+                  isFavorited
+                    ? 'border-negative bg-negative/10 text-negative'
+                    : 'border-border bg-card text-muted-foreground hover:text-foreground'
                 }`}
                 aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
               >
@@ -237,7 +334,9 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
               <span className="text-3xl font-700 text-foreground">₹{listing.estimatedValue}</span>
               <span className="text-sm text-muted-foreground">estimated swap value</span>
             </div>
-            <p className="text-xs text-muted-foreground">Value based on brand, condition, and market data</p>
+            <p className="text-xs text-muted-foreground">
+              Value based on brand, condition, and market data
+            </p>
           </div>
 
           {/* Quick Info */}
@@ -263,7 +362,9 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
           {/* Location */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
             <MapPin size={16} />
-            <span>{listing.location} · {listing.distance} miles away</span>
+            <span>
+              {listing.location} · {listing.distance} miles away
+            </span>
           </div>
 
           {/* Description */}
@@ -276,21 +377,35 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
           <div className="bg-card rounded-2xl border border-border p-5 mb-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                <span className="text-primary text-sm font-700">{listing.owner.avatar}</span>
+                <span className="text-primary text-sm font-700">
+                  {listing.owner?.avatar || 'NA'}
+                </span>
               </div>
               <div className="flex-1">
-                <p className="text-sm font-600 text-foreground">{listing.owner.name}</p>
-                <p className="text-xs text-muted-foreground">Member since {listing.owner.memberSince} · {listing.owner.responseRate} response rate</p>
+                <p className="text-sm font-600 text-foreground">
+                  {listing.owner?.name || 'Unknown'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Member since {listing.owner?.memberSince || 'N/A'} ·{' '}
+                  {listing.owner?.responseRate || 'N/A'} response rate
+                </p>
               </div>
               <div className="text-right">
                 <div className="flex items-center gap-1">
                   <Star size={14} className="fill-warning text-warning" />
-                  <span className="text-sm font-600 text-foreground">{listing.owner.rating}</span>
+                  <span className="text-sm font-600 text-foreground">
+                    {listing.owner?.rating || 0}
+                  </span>
                 </div>
-                <p className="text-xs text-muted-foreground">{listing.owner.reviewCount} reviews</p>
+                <p className="text-xs text-muted-foreground">
+                  {listing.owner?.reviewCount || 0} reviews
+                </p>
               </div>
             </div>
-            <Link href="/messages" className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border border-border text-sm font-600 text-foreground hover:bg-muted transition-colors">
+            <Link
+              href="/messages"
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border border-border text-sm font-600 text-foreground hover:bg-muted transition-colors"
+            >
               <MessageSquare size={16} />
               Message Owner
             </Link>
@@ -298,7 +413,10 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
 
           {/* Actions */}
           <div className="flex gap-3">
-            <Link href="/messages" className="flex-1 py-3 rounded-xl border border-border text-sm font-600 text-foreground hover:bg-muted transition-colors flex items-center justify-center">
+            <Link
+              href="/messages"
+              className="flex-1 py-3 rounded-xl border border-border text-sm font-600 text-foreground hover:bg-muted transition-colors flex items-center justify-center"
+            >
               <MessageSquare size={18} className="mr-2" />
               Message
             </Link>
@@ -325,12 +443,16 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
             >
               <div className="aspect-square relative" style={{ backgroundColor: item.color }}>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-white/80 text-xs font-500 text-center px-2">{item.brand}</span>
+                  <span className="text-white/80 text-xs font-500 text-center px-2">
+                    {item.brand}
+                  </span>
                 </div>
               </div>
               <div className="p-4">
                 <p className="text-sm font-600 text-foreground mb-1 truncate">{item.title}</p>
-                <p className="text-xs text-muted-foreground mb-2">{item.brand} · Size {item.size}</p>
+                <p className="text-xs text-muted-foreground mb-2">
+                  {item.brand} · Size {item.size}
+                </p>
                 <p className="text-sm font-600 text-primary">₹{item.value}</p>
               </div>
             </Link>
@@ -347,15 +469,22 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
       >
         <div>
           <div className="flex gap-4 p-4 bg-muted rounded-xl mb-5">
-            <div className="w-16 h-16 rounded-xl shrink-0" style={{ backgroundColor: listing.imageColor }}>
+            <div
+              className="w-16 h-16 rounded-xl shrink-0"
+              style={{ backgroundColor: listing.imageColor }}
+            >
               <div className="w-full h-full flex items-center justify-center">
                 <span className="text-white/80 text-xs font-500">{listing.brand}</span>
               </div>
             </div>
             <div>
               <p className="text-sm font-600 text-foreground">{listing.title}</p>
-              <p className="text-xs text-muted-foreground">{listing.brand} · Size {listing.size}</p>
-              <p className="text-xs text-primary font-600 mt-1">Est. value: ₹{listing.estimatedValue}</p>
+              <p className="text-xs text-muted-foreground">
+                {listing.brand} · Size {listing.size}
+              </p>
+              <p className="text-xs text-primary font-600 mt-1">
+                Est. value: ₹{listing.estimatedValue}
+              </p>
             </div>
           </div>
 
@@ -373,12 +502,12 @@ export default function ItemDetailClient({ listingId }: { listingId: string }) {
 
           <div className="mb-5">
             <label className="block text-sm font-500 text-foreground mb-1.5">
-              Message to {listing.owner.name.split(' ')[0]}
+              Message to {listing.owner?.name?.split(' ')[0] || 'the owner'}
             </label>
             <textarea
               rows={3}
               className="input-field resize-none"
-              placeholder={`Hi ${listing.owner.name.split(' ')[0]}! I love your ${listing.title.toLowerCase()}. I would like to offer...`}
+              placeholder={`Hi ${listing.owner?.name?.split(' ')[0] || 'there'}! I love your ${listing.title.toLowerCase()}. I would like to offer...`}
             />
           </div>
 

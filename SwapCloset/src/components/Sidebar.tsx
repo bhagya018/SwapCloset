@@ -15,7 +15,6 @@ import {
   Bell,
   Package,
 } from 'lucide-react';
-import Icon from '@/components/ui/AppIcon';
 
 interface NavItem {
   id: string;

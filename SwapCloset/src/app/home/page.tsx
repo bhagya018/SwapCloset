@@ -1,6 +1,14 @@
 import React from 'react';
 import AppLayout from '@/components/AppLayout';
-import { HeroSection, FeaturedListings, Categories, HowItWorks, SustainableBenefits, Testimonials, Statistics } from './components/HomeComponents';
+import {
+  HeroSection,
+  FeaturedListings,
+  Categories,
+  HowItWorks,
+  SustainableBenefits,
+  Testimonials,
+  Statistics,
+} from './components/HomeComponents';
 
 export default function HomePage() {
   return (

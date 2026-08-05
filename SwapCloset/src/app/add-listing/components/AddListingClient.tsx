@@ -1,8 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { Upload, X, Plus, ArrowRight } from 'lucide-react';
+import { Upload, X, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ListingFormData {
@@ -16,6 +17,22 @@ interface ListingFormData {
   estimatedValue: number;
   location: string;
   description: string;
+}
+
+interface StoredListing {
+  id: string;
+  title: string;
+  brand: string;
+  category: string;
+  size: string;
+  gender: string;
+  color: string;
+  condition: string;
+  estimatedValue: number;
+  location: string;
+  description: string;
+  images: string[];
+  imageUrl: string;
 }
 
 const CATEGORIES = [
@@ -32,7 +49,17 @@ const CATEGORIES = [
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '24', '26', '28', '30', '32', '34', '36'];
 const GENDERS = ['Women', 'Men', 'Unisex', 'Kids'];
 const CONDITIONS = ['Like New', 'Good', 'Fair', 'Well Loved'];
-const BRANDS = ['Nike', 'Adidas', 'Zara', 'H&M', 'Levi\'s', 'Puma', 'Allen Solly', 'Roadster', 'Other'];
+const BRANDS = [
+  'Nike',
+  'Adidas',
+  'Zara',
+  'H&M',
+  "Levi's",
+  'Puma',
+  'Allen Solly',
+  'Roadster',
+  'Other',
+];
 
 export default function AddListingClient() {
   const router = useRouter();
@@ -64,7 +91,7 @@ export default function AddListingClient() {
         const listing = JSON.parse(editData);
         setIsEditing(true);
         setEditListingId(listing.id);
-        
+
         // Populate form with existing data
         form.reset({
           title: listing.title || '',
@@ -78,12 +105,12 @@ export default function AddListingClient() {
           location: listing.location || '',
           description: listing.description || '',
         });
-        
+
         // Load images if available
         if (listing.imageUrl) {
           setUploadedImages([listing.imageUrl]);
         }
-        
+
         // Clear edit data from localStorage
         localStorage.removeItem('editListing');
       } catch (error) {
@@ -116,24 +143,24 @@ export default function AddListingClient() {
 
   const onSubmit = (data: ListingFormData) => {
     setIsSubmitting(true);
-    
+
     // Generate a color based on the item category
     const categoryColors: Record<string, string> = {
       'Tops & T-Shirts': '#4A90A4',
-      'Dresses': '#E8B4B8',
+      Dresses: '#E8B4B8',
       'Jeans & Pants': '#2C3E50',
       'Jackets & Coats': '#8B7355',
-      'Shoes': '#5D6D7E',
-      'Accessories': '#9B59B6',
-      'Skirts': '#F39C12',
+      Shoes: '#5D6D7E',
+      Accessories: '#9B59B6',
+      Skirts: '#F39C12',
       'Sweaters & Hoodies': '#27AE60',
     };
     const defaultColor = categoryColors[data.category] || '#4A90A4';
-    
+
     if (isEditing && editListingId) {
       // Update existing listing
       const existingListings = JSON.parse(localStorage.getItem('userListings') || '[]');
-      const updatedListings = existingListings.map((listing: any) => {
+      const updatedListings = existingListings.map((listing: StoredListing) => {
         if (listing.id === editListingId) {
           return {
             ...listing,
@@ -141,10 +168,14 @@ export default function AddListingClient() {
             brand: data.brand,
             category: data.category,
             size: data.size,
-            condition: data.condition.toLowerCase().replace(' ', '-') as 'like-new' | 'good' | 'fair' | 'well-loved',
+            condition: data.condition.toLowerCase().replace(' ', '-') as
+              'like-new' | 'good' | 'fair' | 'well-loved',
             conditionLabel: data.condition,
             estimatedValue: data.estimatedValue,
-            swapValueRange: [Math.max(0, data.estimatedValue - 15), data.estimatedValue + 15] as [number, number],
+            swapValueRange: [Math.max(0, data.estimatedValue - 15), data.estimatedValue + 15] as [
+              number,
+              number,
+            ],
             imageUrl: uploadedImages[0] || listing.imageUrl,
             imageAlt: data.title,
             color: defaultColor,
@@ -155,10 +186,10 @@ export default function AddListingClient() {
         }
         return listing;
       });
-      
+
       localStorage.setItem('userListings', JSON.stringify(updatedListings));
       window.dispatchEvent(new Event('localStorageUpdated'));
-      
+
       setTimeout(() => {
         setIsSubmitting(false);
         setIsEditing(false);
@@ -174,10 +205,14 @@ export default function AddListingClient() {
         brand: data.brand,
         category: data.category,
         size: data.size,
-        condition: data.condition.toLowerCase().replace(' ', '-') as 'like-new' | 'good' | 'fair' | 'well-loved',
+        condition: data.condition.toLowerCase().replace(' ', '-') as
+          'like-new' | 'good' | 'fair' | 'well-loved',
         conditionLabel: data.condition,
         estimatedValue: data.estimatedValue,
-        swapValueRange: [Math.max(0, data.estimatedValue - 15), data.estimatedValue + 15] as [number, number],
+        swapValueRange: [Math.max(0, data.estimatedValue - 15), data.estimatedValue + 15] as [
+          number,
+          number,
+        ],
         imageUrl: uploadedImages[0] || '', // Use uploaded image or empty string
         imageAlt: data.title,
         color: defaultColor, // Add color for display
@@ -194,7 +229,7 @@ export default function AddListingClient() {
       // Save to localStorage
       const existingListings = JSON.parse(localStorage.getItem('userListings') || '[]');
       localStorage.setItem('userListings', JSON.stringify([...existingListings, newListing]));
-      
+
       // Dispatch custom event to notify other components
       window.dispatchEvent(new Event('localStorageUpdated'));
 
@@ -213,7 +248,9 @@ export default function AddListingClient() {
           {isEditing ? 'Edit Listing' : 'Create New Listing'}
         </h1>
         <p className="text-sm text-muted-foreground">
-          {isEditing ? 'Update your clothing item details' : 'Add your clothing item to the swap marketplace'}
+          {isEditing
+            ? 'Update your clothing item details'
+            : 'Add your clothing item to the swap marketplace'}
         </p>
       </div>
 
@@ -227,7 +264,13 @@ export default function AddListingClient() {
             {uploadedImages.map((img, index) => (
               <div key={index} className="aspect-square relative group">
                 <div className="w-full h-full rounded-xl bg-muted overflow-hidden">
-                  <img src={img} alt={`Upload ${index + 1}`} className="w-full h-full object-cover" />
+                  <Image
+                    src={img}
+                    alt={`Upload ${index + 1}`}
+                    width={100}
+                    height={100}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <button
                   type="button"
@@ -252,7 +295,9 @@ export default function AddListingClient() {
               </label>
             )}
           </div>
-          <p className="text-xs text-muted-foreground mt-2">Upload up to 5 photos. If no photo is uploaded, a colored placeholder will be used.</p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Upload up to 5 photos. If no photo is uploaded, a colored placeholder will be used.
+          </p>
         </div>
 
         {/* Basic Info */}
@@ -282,7 +327,9 @@ export default function AddListingClient() {
             >
               <option value="">Select brand</option>
               {BRANDS.map((brand) => (
-                <option key={brand} value={brand}>{brand}</option>
+                <option key={brand} value={brand}>
+                  {brand}
+                </option>
               ))}
             </select>
             {form.formState.errors.brand && (
@@ -300,11 +347,15 @@ export default function AddListingClient() {
             >
               <option value="">Select category</option>
               {CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
             {form.formState.errors.category && (
-              <p className="mt-1.5 text-xs text-negative">{form.formState.errors.category.message}</p>
+              <p className="mt-1.5 text-xs text-negative">
+                {form.formState.errors.category.message}
+              </p>
             )}
           </div>
 
@@ -318,7 +369,9 @@ export default function AddListingClient() {
             >
               <option value="">Select size</option>
               {SIZES.map((size) => (
-                <option key={size} value={size}>{size}</option>
+                <option key={size} value={size}>
+                  {size}
+                </option>
               ))}
             </select>
             {form.formState.errors.size && (
@@ -336,7 +389,9 @@ export default function AddListingClient() {
             >
               <option value="">Select gender</option>
               {GENDERS.map((gender) => (
-                <option key={gender} value={gender}>{gender}</option>
+                <option key={gender} value={gender}>
+                  {gender}
+                </option>
               ))}
             </select>
             {form.formState.errors.gender && (
@@ -369,11 +424,15 @@ export default function AddListingClient() {
             >
               <option value="">Select condition</option>
               {CONDITIONS.map((cond) => (
-                <option key={cond} value={cond}>{cond}</option>
+                <option key={cond} value={cond}>
+                  {cond}
+                </option>
               ))}
             </select>
             {form.formState.errors.condition && (
-              <p className="mt-1.5 text-xs text-negative">{form.formState.errors.condition.message}</p>
+              <p className="mt-1.5 text-xs text-negative">
+                {form.formState.errors.condition.message}
+              </p>
             )}
           </div>
 
@@ -391,7 +450,9 @@ export default function AddListingClient() {
               })}
             />
             {form.formState.errors.estimatedValue && (
-              <p className="mt-1.5 text-xs text-negative">{form.formState.errors.estimatedValue.message}</p>
+              <p className="mt-1.5 text-xs text-negative">
+                {form.formState.errors.estimatedValue.message}
+              </p>
             )}
           </div>
         </div>
@@ -427,7 +488,9 @@ export default function AddListingClient() {
             })}
           />
           {form.formState.errors.description && (
-            <p className="mt-1.5 text-xs text-negative">{form.formState.errors.description.message}</p>
+            <p className="mt-1.5 text-xs text-negative">
+              {form.formState.errors.description.message}
+            </p>
           )}
         </div>
 

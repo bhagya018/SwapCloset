@@ -9,11 +9,7 @@ interface AppLogoProps {
   onClick?: () => void;
 }
 
-const AppLogo = memo(function AppLogo({
-  size = 32,
-  className = '',
-  onClick,
-}: AppLogoProps) {
+const AppLogo = memo(function AppLogo({ size = 32, className = '', onClick }: AppLogoProps) {
   const containerClassName = useMemo(() => {
     const classes = ['flex items-center'];
     if (onClick) classes.push('cursor-pointer hover:opacity-80 transition-opacity');

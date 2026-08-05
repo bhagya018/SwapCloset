@@ -1,6 +1,15 @@
 'use client';
 import React, { useState } from 'react';
-import { Bell, ArrowLeftRight, MessageSquare, Heart, Check, X, Clock, CheckCheck } from 'lucide-react';
+import {
+  Bell,
+  ArrowLeftRight,
+  MessageSquare,
+  Heart,
+  Check,
+  X,
+  Clock,
+  CheckCheck,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import Badge from '@/components/ui/Badge';
 import EmptyState from '@/components/ui/EmptyState';
@@ -8,7 +17,13 @@ import { useRouter } from 'next/navigation';
 
 interface Notification {
   id: string;
-  type: 'swap_request' | 'swap_accepted' | 'swap_rejected' | 'new_message' | 'item_favorited' | 'swap_completed';
+  type:
+    | 'swap_request'
+    | 'swap_accepted'
+    | 'swap_rejected'
+    | 'new_message'
+    | 'item_favorited'
+    | 'swap_completed';
   title: string;
   message: string;
   time: string;
@@ -19,13 +34,13 @@ interface Notification {
 
 export default function NotificationsClient() {
   const router = useRouter();
-  
+
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: '1',
       type: 'swap_request',
       title: 'New swap request',
-      message: 'Sarah Chen wants to swap her Zara Floral Dress for your Vintage Levi\'s Jeans',
+      message: "Sarah Chen wants to swap her Zara Floral Dress for your Vintage Levi's Jeans",
       time: '2 hours ago',
       read: false,
       actionUrl: '/swap-requests',
@@ -63,7 +78,8 @@ export default function NotificationsClient() {
       id: '5',
       type: 'swap_completed',
       title: 'Swap completed!',
-      message: 'You successfully completed a swap with Alex Thompson. Don\'t forget to leave a review!',
+      message:
+        "You successfully completed a swap with Alex Thompson. Don't forget to leave a review!",
       time: '3 days ago',
       read: true,
       actionUrl: '/swap-requests',
@@ -74,14 +90,12 @@ export default function NotificationsClient() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
   };
 
   const handleNotificationClick = (notification: Notification) => {
     markAsRead(notification.id);
-    
+
     if (notification.listingId) {
       router.push(`/listings/${notification.listingId}`);
     } else if (notification.actionUrl) {
@@ -140,10 +154,7 @@ export default function NotificationsClient() {
           )}
         </div>
         {unreadCount > 0 && (
-          <button
-            onClick={markAllAsRead}
-            className="text-sm font-500 text-primary hover:underline"
-          >
+          <button onClick={markAllAsRead} className="text-sm font-500 text-primary hover:underline">
             Mark all as read
           </button>
         )}

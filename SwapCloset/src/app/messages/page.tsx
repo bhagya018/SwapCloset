@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React from 'react';
 import AppLayout from '@/components/AppLayout';
 import ChatWindow from '@/components/ChatWindow';

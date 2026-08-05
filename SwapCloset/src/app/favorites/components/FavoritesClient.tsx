@@ -1,13 +1,14 @@
 'use client';
 import React from 'react';
-import { Heart, ArrowLeftRight } from 'lucide-react';
+import Image from 'next/image';
+import { Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import EmptyState from '@/components/ui/EmptyState';
 import { useRouter } from 'next/navigation';
 
 export default function FavoritesClient() {
   const router = useRouter();
-  
+
   // Mock favorites data with actual image URLs
   const favorites = [
     {
@@ -45,7 +46,7 @@ export default function FavoritesClient() {
     },
   ];
 
-  const handleRemoveFavorite = (id: string) => {
+  const handleRemoveFavorite = (_id: string) => {
     // BACKEND INTEGRATION: DELETE /api/favorites/:id
     toast.success('Removed from favorites');
   };
@@ -69,26 +70,38 @@ export default function FavoritesClient() {
           title="No favorites yet"
           description="Start browsing listings and save items you love by clicking the heart icon."
           actionLabel="Browse Listings"
-          onAction={() => window.location.href = '/clothing-listings-page'}
+          onAction={() => (window.location.href = '/clothing-listings-page')}
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {favorites.map((item) => (
-            <div key={item.id} className="bg-card rounded-2xl border border-border overflow-hidden hover:shadow-card transition-all duration-200 group cursor-pointer" onClick={() => handleViewDetails(item.id)}>
+            <div
+              key={item.id}
+              className="bg-card rounded-2xl border border-border overflow-hidden hover:shadow-card transition-all duration-200 group cursor-pointer"
+              onClick={() => handleViewDetails(item.id)}
+            >
               <div className="aspect-square relative" style={{ backgroundColor: item.color }}>
                 {item.imageUrl ? (
-                  <img 
-                    src={item.imageUrl} 
+                  <Image
+                    src={item.imageUrl}
                     alt={item.title}
+                    width={300}
+                    height={300}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
-                      (e.currentTarget.parentElement as HTMLElement).querySelector('.fallback-brand')?.classList.remove('hidden');
+                      (e.currentTarget.parentElement as HTMLElement)
+                        .querySelector('.fallback-brand')
+                        ?.classList.remove('hidden');
                     }}
                   />
                 ) : null}
-                <div className={`absolute inset-0 flex items-center justify-center fallback-brand ${item.imageUrl ? 'hidden' : ''}`}>
-                  <span className="text-white/90 text-sm font-600 text-center px-4">{item.brand}</span>
+                <div
+                  className={`absolute inset-0 flex items-center justify-center fallback-brand ${item.imageUrl ? 'hidden' : ''}`}
+                >
+                  <span className="text-white/90 text-sm font-600 text-center px-4">
+                    {item.brand}
+                  </span>
                 </div>
                 <button
                   onClick={(e) => {
@@ -103,10 +116,12 @@ export default function FavoritesClient() {
               </div>
               <div className="p-4">
                 <p className="text-sm font-600 text-foreground mb-1 truncate">{item.title}</p>
-                <p className="text-xs text-muted-foreground mb-2">{item.brand} · Size {item.size}</p>
+                <p className="text-xs text-muted-foreground mb-2">
+                  {item.brand} · Size {item.size}
+                </p>
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-600 text-primary">${item.value}</p>
-                  <button 
+                  <button
                     onClick={(e) => {
                       e.stopPropagation();
                       handleViewDetails(item.id);

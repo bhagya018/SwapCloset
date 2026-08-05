@@ -1,7 +1,6 @@
 import React from 'react';
 import { ArrowLeftRight, Eye, MessageSquare, Heart, CheckCircle, Clock } from 'lucide-react';
 import { ACTIVITY_FEED } from './dashboardData';
-import Icon from '@/components/ui/AppIcon';
 
 const ICON_MAP: Record<string, React.ElementType> = {
   ArrowLeftRight,

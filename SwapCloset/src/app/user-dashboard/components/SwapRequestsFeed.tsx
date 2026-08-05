@@ -1,6 +1,16 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { ArrowLeftRight, MessageSquare, Check, X, ChevronRight, Clock, Eye, MapPin, Calendar } from 'lucide-react';
+import {
+  ArrowLeftRight,
+  MessageSquare,
+  Check,
+  X,
+  ChevronRight,
+  Clock,
+  Eye,
+  MapPin,
+  Calendar,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import Badge from '@/components/ui/Badge';
 import Modal from '@/components/ui/Modal';
@@ -48,7 +58,7 @@ export default function SwapRequestsFeed() {
     const loadSwapRequests = () => {
       try {
         const savedRequests = JSON.parse(localStorage.getItem('swapRequests') || '[]');
-        
+
         if (savedRequests.length > 0) {
           // Convert localStorage requests to SwapRequest format
           const convertedRequests: SwapRequest[] = savedRequests.map((req: LocalSwapRequest) => ({
@@ -61,32 +71,34 @@ export default function SwapRequestsFeed() {
             theirItemValue: req.theirValue || 50,
             myItem: 'Your item',
             myItemValue: req.offeringValue || 50,
-            status: req.status as any,
+            status: req.status as SwapRequest['status'],
             statusLabel: req.status === 'pending' ? 'Pending' : req.status,
-            sentDaysAgo: Math.floor((Date.now() - new Date(req.createdAt).getTime()) / (1000 * 60 * 60 * 24)),
+            sentDaysAgo: Math.floor(
+              (Date.now() - new Date(req.createdAt).getTime()) / (1000 * 60 * 60 * 24)
+            ),
             lastMessage: req.message,
             listingId: req.listingId,
           }));
-          
+
           // Sort by creation date (newest first)
           convertedRequests.sort((a, b) => {
             const aTime = new Date(a.id.replace('swap-', '')).getTime();
             const bTime = new Date(b.id.replace('swap-', '')).getTime();
             return bTime - aTime;
           });
-          
+
           setRequests([...convertedRequests, ...SWAP_REQUESTS]);
         }
       } catch (error) {
         console.error('Error loading swap requests:', error);
       }
     };
-    
+
     loadSwapRequests();
     const handleStorageChange = () => loadSwapRequests();
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('swapRequestsUpdated', handleStorageChange);
-    
+
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('swapRequestsUpdated', handleStorageChange);
@@ -204,7 +216,7 @@ export default function SwapRequestsFeed() {
                 {/* Swap items */}
                 <div className="flex items-center gap-2 mb-2 flex-wrap">
                   {req.listingId ? (
-                    <button 
+                    <button
                       onClick={() => req.listingId && handleViewListing(req.listingId)}
                       className="text-xs bg-muted px-2.5 py-1 rounded-lg text-foreground font-500 truncate max-w-[160px] hover:bg-muted/80 transition-colors cursor-pointer"
                     >
@@ -238,7 +250,10 @@ export default function SwapRequestsFeed() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-2">
-                  <a href="/messages" className="flex items-center gap-1.5 text-xs font-500 text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-muted">
+                  <a
+                    href="/messages"
+                    className="flex items-center gap-1.5 text-xs font-500 text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-muted"
+                  >
                     <MessageSquare size={13} />
                     Message
                   </a>
@@ -261,7 +276,7 @@ export default function SwapRequestsFeed() {
                     </>
                   )}
                   {req.status === 'accepted' && (
-                    <button 
+                    <button
                       onClick={() => handleConfirmMeetup(req)}
                       className="flex items-center gap-1.5 text-xs font-600 text-info px-3 py-1.5 rounded-lg bg-info/10 hover:bg-info/20 transition-colors"
                     >
@@ -270,7 +285,7 @@ export default function SwapRequestsFeed() {
                     </button>
                   )}
                   {req.status === 'completed' && (
-                    <button 
+                    <button
                       onClick={() => handleViewMeetupDetails(req)}
                       className="flex items-center gap-1.5 text-xs font-600 text-positive px-3 py-1.5 rounded-lg bg-positive/10 hover:bg-positive/20 transition-colors"
                     >
@@ -296,7 +311,9 @@ export default function SwapRequestsFeed() {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                <span className="text-primary text-sm font-700">{selectedMeetup.otherUserAvatar}</span>
+                <span className="text-primary text-sm font-700">
+                  {selectedMeetup.otherUserAvatar}
+                </span>
               </div>
               <div>
                 <p className="text-sm font-600 text-foreground">{selectedMeetup.otherUserName}</p>
@@ -318,7 +335,11 @@ export default function SwapRequestsFeed() {
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Scheduled Date</p>
                   <p className="text-sm font-600 text-foreground">
-                    {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                    {new Date().toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
                   </p>
                 </div>
               </div>

@@ -27,7 +27,10 @@ export default function Topbar() {
         </div>
 
         {/* Search */}
-        <form onSubmit={handleSearch} className="hidden md:flex items-center flex-1 max-w-md relative">
+        <form
+          onSubmit={handleSearch}
+          className="hidden md:flex items-center flex-1 max-w-md relative"
+        >
           <Search size={16} className="absolute left-3 text-muted-foreground" />
           <input
             type="text"

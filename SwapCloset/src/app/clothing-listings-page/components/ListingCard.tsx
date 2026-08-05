@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { MapPin, Heart, ArrowLeftRight, DollarSign } from 'lucide-react';
 import { toast } from 'sonner';
 import Badge from '@/components/ui/Badge';
@@ -38,28 +39,34 @@ export default function ListingCard({ listing, onRequestSwap }: ListingCardProps
   };
 
   return (
-    <div 
+    <div
       className="bg-card rounded-2xl border border-border overflow-hidden card-hover group cursor-pointer"
       onClick={handleViewDetails}
     >
       {/* Image */}
-      <div 
+      <div
         className="relative h-52 overflow-hidden"
-        style={{ backgroundColor: (listing as any).color || '#4A90A4' }}
+        style={{ backgroundColor: listing.color || '#4A90A4' }}
       >
         {listing.imageUrl ? (
-          <img 
-            src={listing.imageUrl} 
+          <Image
+            src={listing.imageUrl}
             alt={listing.imageAlt || listing.title}
+            width={300}
+            height={300}
             className="w-full h-full object-cover"
             onError={(e) => {
               // Fallback to colored background if image fails to load
               e.currentTarget.style.display = 'none';
-              (e.currentTarget.parentElement as HTMLElement).querySelector('.fallback-brand')?.classList.remove('hidden');
+              (e.currentTarget.parentElement as HTMLElement)
+                .querySelector('.fallback-brand')
+                ?.classList.remove('hidden');
             }}
           />
         ) : null}
-        <div className={`absolute inset-0 flex items-center justify-center fallback-brand ${listing.imageUrl ? 'hidden' : ''}`}>
+        <div
+          className={`absolute inset-0 flex items-center justify-center fallback-brand ${listing.imageUrl ? 'hidden' : ''}`}
+        >
           <span className="text-white/90 text-sm font-600 text-center px-4">{listing.brand}</span>
         </div>
         {/* Save button */}

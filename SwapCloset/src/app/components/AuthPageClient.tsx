@@ -16,7 +16,6 @@ import {
   Star,
 } from 'lucide-react';
 import AppLogo from '@/components/ui/AppLogo';
-import Icon from '@/components/ui/AppIcon';
 
 // ─── Mock credentials ────────────────────────────────────────────────
 const MOCK_CREDENTIALS = {
@@ -38,13 +37,6 @@ interface SignupStep1Data {
   password: string;
   confirmPassword: string;
   city: string;
-}
-
-interface SignupStep2Data {
-  topSize: string;
-  bottomSize: string;
-  shoeSize: string;
-  styleTags: string[];
 }
 
 const TOP_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
@@ -84,7 +76,7 @@ export default function AuthPageClient() {
   const [selectedShoeSize, setSelectedShoeSize] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
-  const [step1Data, setStep1Data] = useState<SignupStep1Data | null>(null);
+  const [_step1Data, setStep1Data] = useState<SignupStep1Data | null>(null);
 
   // Login form
   const loginForm = useForm<LoginFormData>({
@@ -128,7 +120,7 @@ export default function AuthPageClient() {
   };
 
   const handleSignupStep2 = () => {
-    // BACKEND INTEGRATION: POST /api/auth/register with step1Data + size preferences + style tags
+    // BACKEND INTEGRATION: POST /api/auth/register with form data + size preferences + style tags
     if (!selectedTopSize || !selectedBottomSize || !selectedShoeSize) {
       toast.error('Please select all size preferences');
       return;

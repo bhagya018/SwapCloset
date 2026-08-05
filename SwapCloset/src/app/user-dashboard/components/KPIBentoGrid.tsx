@@ -9,7 +9,6 @@ import {
   TrendingUp,
   TrendingDown,
 } from 'lucide-react';
-import Icon from '@/components/ui/AppIcon';
 
 interface KPICardProps {
   id: string;

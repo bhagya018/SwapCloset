@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import {
   ArrowUpDown,
   Eye,
@@ -48,11 +49,11 @@ export default function MyListingsTable() {
     const loadListings = () => {
       try {
         const savedListings = JSON.parse(localStorage.getItem('userListings') || '[]');
-        console.log('MyListingsTable - Loaded from localStorage:', savedListings.length);
-        
+        console.info('MyListingsTable - Loaded from localStorage:', savedListings.length);
+
         if (savedListings.length > 0) {
           // Convert localStorage listings to MyListing format
-          const convertedListings: MyListing[] = savedListings.map((item: any) => ({
+          const convertedListings: MyListing[] = savedListings.map((item: MyListing) => ({
             id: item.id,
             title: item.title,
             brand: item.brand,
@@ -67,10 +68,10 @@ export default function MyListingsTable() {
             imageAlt: item.imageAlt,
             color: item.color || '#4A90A4', // Add color field
           }));
-          console.log('MyListingsTable - Converted listings:', convertedListings.length);
+          console.info('MyListingsTable - Converted listings:', convertedListings.length);
           setListings([...MY_LISTINGS, ...convertedListings]);
         } else {
-          console.log('MyListingsTable - No user listings found, using mock data only');
+          console.info('MyListingsTable - No user listings found, using mock data only');
           setListings(MY_LISTINGS);
         }
       } catch (error) {
@@ -78,13 +79,13 @@ export default function MyListingsTable() {
         setListings(MY_LISTINGS);
       }
     };
-    
+
     loadListings();
     // Listen for storage changes
     const handleStorageChange = () => loadListings();
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('localStorageUpdated', handleStorageChange);
-    
+
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('localStorageUpdated', handleStorageChange);
@@ -126,9 +127,9 @@ export default function MyListingsTable() {
     if (!deleteTarget) return;
     // Remove from localStorage if it's a user-created listing
     const savedListings = JSON.parse(localStorage.getItem('userListings') || '[]');
-    const updatedListings = savedListings.filter((l: any) => l.id !== deleteTarget.id);
+    const updatedListings = savedListings.filter((l: MyListing) => l.id !== deleteTarget.id);
     localStorage.setItem('userListings', JSON.stringify(updatedListings));
-    
+
     // Remove from state
     setListings((prev) => prev.filter((l) => l.id !== deleteTarget.id));
     toast.success(`"${deleteTarget.title}" removed from your listings`);
@@ -138,9 +139,9 @@ export default function MyListingsTable() {
   const handleBulkDelete = () => {
     // Remove from localStorage
     const savedListings = JSON.parse(localStorage.getItem('userListings') || '[]');
-    const updatedListings = savedListings.filter((l: any) => !selectedIds.includes(l.id));
+    const updatedListings = savedListings.filter((l: MyListing) => !selectedIds.includes(l.id));
     localStorage.setItem('userListings', JSON.stringify(updatedListings));
-    
+
     setListings((prev) => prev.filter((l) => !selectedIds.includes(l.id)));
     toast.success(`${selectedIds.length} listing${selectedIds.length > 1 ? 's' : ''} removed`);
     setSelectedIds([]);
@@ -265,23 +266,31 @@ export default function MyListingsTable() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div 
+                      <div
                         className="w-10 h-10 rounded-lg shrink-0 overflow-hidden relative"
-                        style={{ backgroundColor: (listing as any).color || '#4A90A4' }}
+                        style={{ backgroundColor: listing.color || '#4A90A4' }}
                       >
                         {listing.imageUrl ? (
-                          <img 
-                            src={listing.imageUrl} 
+                          <Image
+                            src={listing.imageUrl}
                             alt={listing.title}
+                            width={40}
+                            height={40}
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
-                              (e.currentTarget.parentElement as HTMLElement).querySelector('.fallback-brand')?.classList.remove('hidden');
+                              (e.currentTarget.parentElement as HTMLElement)
+                                .querySelector('.fallback-brand')
+                                ?.classList.remove('hidden');
                             }}
                           />
                         ) : null}
-                        <div className={`absolute inset-0 flex items-center justify-center fallback-brand ${listing.imageUrl ? 'hidden' : ''}`}>
-                          <span className="text-white text-xs font-600">{listing.brand.substring(0, 2).toUpperCase()}</span>
+                        <div
+                          className={`absolute inset-0 flex items-center justify-center fallback-brand ${listing.imageUrl ? 'hidden' : ''}`}
+                        >
+                          <span className="text-white text-xs font-600">
+                            {listing.brand.substring(0, 2).toUpperCase()}
+                          </span>
                         </div>
                       </div>
                       <div className="min-w-0">

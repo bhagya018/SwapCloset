@@ -1,6 +1,5 @@
 import React from 'react';
 import { Leaf, Recycle, Wind, Droplets } from 'lucide-react';
-import Icon from '@/components/ui/AppIcon';
 
 const IMPACT_STATS = [
   { id: 'impact-co2', icon: Wind, label: 'CO₂ avoided', value: '42 kg', subtext: 'vs buying new' },

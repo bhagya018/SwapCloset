@@ -1,9 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Camera, MapPin, Mail, Phone, Calendar, Shield, Star, Edit2, Save, X } from 'lucide-react';
+import { Camera, MapPin, Mail, Shield, Star, Edit2, Save, X } from 'lucide-react';
 import { toast } from 'sonner';
-import Badge from '@/components/ui/Badge';
 
 interface ProfileFormData {
   fullName: string;
@@ -33,7 +32,7 @@ export default function ProfileClient() {
     },
   });
 
-  const handleSave = async (data: ProfileFormData) => {
+  const handleSave = async (_data: ProfileFormData) => {
     setIsSaving(true);
     // BACKEND INTEGRATION: PATCH /api/users/profile with data
     setTimeout(() => {
@@ -54,7 +53,9 @@ export default function ProfileClient() {
     <div className="fade-in max-w-4xl mx-auto">
       <div className="mb-8">
         <h1 className="text-2xl font-700 text-foreground mb-1">My Profile</h1>
-        <p className="text-sm text-muted-foreground">Manage your account information and preferences</p>
+        <p className="text-sm text-muted-foreground">
+          Manage your account information and preferences
+        </p>
       </div>
 
       {/* Profile Header */}
@@ -98,7 +99,8 @@ export default function ProfileClient() {
             </div>
 
             <p className="text-sm text-muted-foreground max-w-lg">
-              Fashion enthusiast passionate about sustainable clothing. Love vintage finds and minimalist style.
+              Fashion enthusiast passionate about sustainable clothing. Love vintage finds and
+              minimalist style.
             </p>
           </div>
         </div>
@@ -116,51 +118,34 @@ export default function ProfileClient() {
 
       {/* Profile Form */}
       {isEditing && (
-        <form onSubmit={form.handleSubmit(handleSave)} className="bg-card rounded-2xl border border-border p-6 mb-6 fade-in">
+        <form
+          onSubmit={form.handleSubmit(handleSave)}
+          className="bg-card rounded-2xl border border-border p-6 mb-6 fade-in"
+        >
           <h3 className="text-lg font-600 text-foreground mb-4">Edit Profile Information</h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <label className="block text-sm font-500 text-foreground mb-1.5">Full Name</label>
-              <input
-                type="text"
-                className="input-field"
-                {...form.register('fullName')}
-              />
+              <input type="text" className="input-field" {...form.register('fullName')} />
             </div>
             <div>
               <label className="block text-sm font-500 text-foreground mb-1.5">Email</label>
-              <input
-                type="email"
-                className="input-field"
-                {...form.register('email')}
-              />
+              <input type="email" className="input-field" {...form.register('email')} />
             </div>
             <div>
               <label className="block text-sm font-500 text-foreground mb-1.5">Phone</label>
-              <input
-                type="tel"
-                className="input-field"
-                {...form.register('phone')}
-              />
+              <input type="tel" className="input-field" {...form.register('phone')} />
             </div>
             <div>
               <label className="block text-sm font-500 text-foreground mb-1.5">Location</label>
-              <input
-                type="text"
-                className="input-field"
-                {...form.register('location')}
-              />
+              <input type="text" className="input-field" {...form.register('location')} />
             </div>
           </div>
 
           <div className="mb-4">
             <label className="block text-sm font-500 text-foreground mb-1.5">Bio</label>
-            <textarea
-              rows={3}
-              className="input-field resize-none"
-              {...form.register('bio')}
-            />
+            <textarea rows={3} className="input-field resize-none" {...form.register('bio')} />
           </div>
 
           <div className="grid grid-cols-3 gap-4 mb-4">
@@ -168,7 +153,9 @@ export default function ProfileClient() {
               <label className="block text-sm font-500 text-foreground mb-1.5">Top Size</label>
               <select className="input-field" {...form.register('topSize')}>
                 {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
-                  <option key={size} value={size}>{size}</option>
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
                 ))}
               </select>
             </div>
@@ -176,7 +163,9 @@ export default function ProfileClient() {
               <label className="block text-sm font-500 text-foreground mb-1.5">Bottom Size</label>
               <select className="input-field" {...form.register('bottomSize')}>
                 {['24', '26', '28', '30', '32', '34', '36'].map((size) => (
-                  <option key={size} value={size}>{size}</option>
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
                 ))}
               </select>
             </div>
@@ -184,7 +173,9 @@ export default function ProfileClient() {
               <label className="block text-sm font-500 text-foreground mb-1.5">Shoe Size</label>
               <select className="input-field" {...form.register('shoeSize')}>
                 {['6', '6.5', '7', '7.5', '8', '8.5', '9', '9.5', '10', '11'].map((size) => (
-                  <option key={size} value={size}>{size}</option>
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
                 ))}
               </select>
             </div>
@@ -222,14 +213,16 @@ export default function ProfileClient() {
       {/* Account Settings */}
       <div className="bg-card rounded-2xl border border-border p-6">
         <h3 className="text-lg font-600 text-foreground mb-4">Account Settings</h3>
-        
+
         <div className="space-y-4">
           <div className="flex items-center justify-between py-3 border-b border-border">
             <div className="flex items-center gap-3">
               <Mail size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-600 text-foreground">Email Notifications</p>
-                <p className="text-xs text-muted-foreground">Receive updates about swaps and messages</p>
+                <p className="text-xs text-muted-foreground">
+                  Receive updates about swaps and messages
+                </p>
               </div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -243,7 +236,9 @@ export default function ProfileClient() {
               <Shield size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-600 text-foreground">Profile Visibility</p>
-                <p className="text-xs text-muted-foreground">Make your profile visible to other swappers</p>
+                <p className="text-xs text-muted-foreground">
+                  Make your profile visible to other swappers
+                </p>
               </div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -257,7 +252,9 @@ export default function ProfileClient() {
               <MapPin size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-600 text-foreground">Location Sharing</p>
-                <p className="text-xs text-muted-foreground">Show your location to nearby swappers</p>
+                <p className="text-xs text-muted-foreground">
+                  Show your location to nearby swappers
+                </p>
               </div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">

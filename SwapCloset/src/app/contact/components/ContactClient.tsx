@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Mail, MessageSquare, MapPin, Send, ArrowRight } from 'lucide-react';
+import { Mail, MessageSquare, MapPin, Send } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ContactFormData {
@@ -21,9 +21,9 @@ export default function ContactClient() {
     },
   });
 
-  const onSubmit = (data: ContactFormData) => {
+  const onSubmit = (_data: ContactFormData) => {
     // BACKEND INTEGRATION: POST /api/contact with data
-    toast.success('Message sent successfully! We\'ll get back to you soon.');
+    toast.success("Message sent successfully! We'll get back to you soon.");
     form.reset();
   };
 
@@ -51,19 +51,23 @@ export default function ContactClient() {
   const faqs = [
     {
       question: 'How does swapping work?',
-      answer: 'Simply list items you no longer wear, browse other listings, and send swap requests. Once both parties agree, arrange a meetup to exchange items.',
+      answer:
+        'Simply list items you no longer wear, browse other listings, and send swap requests. Once both parties agree, arrange a meetup to exchange items.',
     },
     {
       question: 'Is SwapCloset free to use?',
-      answer: 'Yes! SwapCloset is completely free. We believe sustainable fashion should be accessible to everyone.',
+      answer:
+        'Yes! SwapCloset is completely free. We believe sustainable fashion should be accessible to everyone.',
     },
     {
       question: 'How do you ensure safe swaps?',
-      answer: 'We recommend meeting in public places during daylight hours. We also have a rating system and user verification to build trust within the community.',
+      answer:
+        'We recommend meeting in public places during daylight hours. We also have a rating system and user verification to build trust within the community.',
     },
     {
-      question: 'What if an item isn\'t as described?',
-      answer: 'We encourage users to provide accurate descriptions and photos. If there\'s a significant discrepancy, you can decline the swap at the meetup and report the issue.',
+      question: "What if an item isn't as described?",
+      answer:
+        "We encourage users to provide accurate descriptions and photos. If there's a significant discrepancy, you can decline the swap at the meetup and report the issue.",
     },
   ];
 
@@ -73,7 +77,7 @@ export default function ContactClient() {
       <div className="text-center mb-12">
         <h1 className="text-4xl font-700 text-foreground mb-4">Contact Us</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Have questions or feedback? We'd love to hear from you.
+          Have questions or feedback? We&apos;d love to hear from you.
         </p>
       </div>
 
@@ -110,7 +114,9 @@ export default function ContactClient() {
                     {...form.register('name', { required: 'Name is required' })}
                   />
                   {form.formState.errors.name && (
-                    <p className="mt-1.5 text-xs text-negative">{form.formState.errors.name.message}</p>
+                    <p className="mt-1.5 text-xs text-negative">
+                      {form.formState.errors.name.message}
+                    </p>
                   )}
                 </div>
                 <div>
@@ -128,7 +134,9 @@ export default function ContactClient() {
                     })}
                   />
                   {form.formState.errors.email && (
-                    <p className="mt-1.5 text-xs text-negative">{form.formState.errors.email.message}</p>
+                    <p className="mt-1.5 text-xs text-negative">
+                      {form.formState.errors.email.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -147,7 +155,9 @@ export default function ContactClient() {
                   <option value="other">Other</option>
                 </select>
                 {form.formState.errors.subject && (
-                  <p className="mt-1.5 text-xs text-negative">{form.formState.errors.subject.message}</p>
+                  <p className="mt-1.5 text-xs text-negative">
+                    {form.formState.errors.subject.message}
+                  </p>
                 )}
               </div>
 
@@ -160,7 +170,9 @@ export default function ContactClient() {
                   {...form.register('message', { required: 'Message is required' })}
                 />
                 {form.formState.errors.message && (
-                  <p className="mt-1.5 text-xs text-negative">{form.formState.errors.message.message}</p>
+                  <p className="mt-1.5 text-xs text-negative">
+                    {form.formState.errors.message.message}
+                  </p>
                 )}
               </div>
 
@@ -178,7 +190,9 @@ export default function ContactClient() {
 
       {/* FAQ */}
       <div>
-        <h2 className="text-2xl font-700 text-foreground mb-6 text-center">Frequently Asked Questions</h2>
+        <h2 className="text-2xl font-700 text-foreground mb-6 text-center">
+          Frequently Asked Questions
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {faqs.map((faq, index) => (
             <div key={index} className="bg-card rounded-xl border border-border p-5">

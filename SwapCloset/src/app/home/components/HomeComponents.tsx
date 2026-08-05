@@ -1,6 +1,15 @@
 'use client';
 import React from 'react';
-import { ArrowRight, Leaf, Shirt, ArrowLeftRight, MapPin, Star, Search, TrendingUp } from 'lucide-react';
+import {
+  ArrowRight,
+  Leaf,
+  Shirt,
+  ArrowLeftRight,
+  MapPin,
+  Star,
+  Search,
+  TrendingUp,
+} from 'lucide-react';
 import Link from 'next/link';
 
 export function HeroSection() {
@@ -17,14 +26,21 @@ export function HeroSection() {
           Your closet is someone&apos;s treasure
         </h1>
         <p className="text-white/80 text-lg mb-8 max-w-lg">
-          Join thousands of fashion lovers who swap instead of shop. Refresh your wardrobe for free while keeping clothes out of landfills.
+          Join thousands of fashion lovers who swap instead of shop. Refresh your wardrobe for free
+          while keeping clothes out of landfills.
         </p>
         <div className="flex flex-wrap gap-3">
-          <Link href="/clothing-listings-page" className="btn-primary bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-xl text-sm font-600 flex items-center gap-2">
+          <Link
+            href="/clothing-listings-page"
+            className="btn-primary bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-xl text-sm font-600 flex items-center gap-2"
+          >
             Browse Listings
             <ArrowRight size={16} />
           </Link>
-          <Link href="/user-dashboard" className="bg-white/15 text-white hover:bg-white/25 px-6 py-3 rounded-xl text-sm font-600 flex items-center gap-2 transition-colors">
+          <Link
+            href="/user-dashboard"
+            className="bg-white/15 text-white hover:bg-white/25 px-6 py-3 rounded-xl text-sm font-600 flex items-center gap-2 transition-colors"
+          >
             Start Swapping
           </Link>
         </div>
@@ -73,7 +89,10 @@ export function Categories() {
     <div className="mb-12">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-700 text-foreground">Browse by Category</h2>
-        <Link href="/clothing-listings-page" className="text-sm font-500 text-primary hover:underline flex items-center gap-1">
+        <Link
+          href="/clothing-listings-page"
+          className="text-sm font-500 text-primary hover:underline flex items-center gap-1"
+        >
           View all
           <ArrowRight size={14} />
         </Link>
@@ -99,8 +118,22 @@ export function Categories() {
 
 export function FeaturedListings() {
   const listings = [
-    { id: 1, title: 'Vintage Levi&apos;s 501 Jeans', brand: 'Levi\'s', size: '28', value: 45, color: '#4A90A4' },
-    { id: 2, title: 'Zara Floral Summer Dress', brand: 'Zara', size: 'M', value: 35, color: '#E8B4B8' },
+    {
+      id: 1,
+      title: 'Vintage Levi&apos;s 501 Jeans',
+      brand: "Levi's",
+      size: '28',
+      value: 45,
+      color: '#4A90A4',
+    },
+    {
+      id: 2,
+      title: 'Zara Floral Summer Dress',
+      brand: 'Zara',
+      size: 'M',
+      value: 35,
+      color: '#E8B4B8',
+    },
     { id: 3, title: 'Nike Air Max 90', brand: 'Nike', size: '8', value: 65, color: '#2C3E50' },
     { id: 4, title: 'H&M Oversized Hoodie', brand: 'H&M', size: 'L', value: 25, color: '#8B7355' },
   ];
@@ -109,7 +142,10 @@ export function FeaturedListings() {
     <div className="mb-12">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-700 text-foreground">Featured Listings</h2>
-        <Link href="/clothing-listings-page" className="text-sm font-500 text-primary hover:underline flex items-center gap-1">
+        <Link
+          href="/clothing-listings-page"
+          className="text-sm font-500 text-primary hover:underline flex items-center gap-1"
+        >
           View all
           <ArrowRight size={14} />
         </Link>
@@ -123,12 +159,16 @@ export function FeaturedListings() {
           >
             <div className="aspect-square relative" style={{ backgroundColor: item.color }}>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-white/80 text-xs font-500 text-center px-2">{item.brand}</span>
+                <span className="text-white/80 text-xs font-500 text-center px-2">
+                  {item.brand}
+                </span>
               </div>
             </div>
             <div className="p-4">
               <p className="text-sm font-600 text-foreground mb-1 truncate">{item.title}</p>
-              <p className="text-xs text-muted-foreground mb-2">{item.brand} · Size {item.size}</p>
+              <p className="text-xs text-muted-foreground mb-2">
+                {item.brand} · Size {item.size}
+              </p>
               <p className="text-sm font-600 text-primary">₹{item.value}</p>
             </div>
           </Link>
@@ -140,10 +180,26 @@ export function FeaturedListings() {
 
 export function HowItWorks() {
   const steps = [
-    { icon: Shirt, title: 'List Your Items', description: 'Add photos and details of clothes you no longer wear' },
-    { icon: Search, title: 'Browse & Discover', description: 'Find items you love from swappers near you' },
-    { icon: ArrowLeftRight, title: 'Request a Swap', description: 'Send swap requests and negotiate directly' },
-    { icon: MapPin, title: 'Meet & Exchange', description: 'Arrange a safe meetup and complete the swap' },
+    {
+      icon: Shirt,
+      title: 'List Your Items',
+      description: 'Add photos and details of clothes you no longer wear',
+    },
+    {
+      icon: Search,
+      title: 'Browse & Discover',
+      description: 'Find items you love from swappers near you',
+    },
+    {
+      icon: ArrowLeftRight,
+      title: 'Request a Swap',
+      description: 'Send swap requests and negotiate directly',
+    },
+    {
+      icon: MapPin,
+      title: 'Meet & Exchange',
+      description: 'Arrange a safe meetup and complete the swap',
+    },
   ];
 
   return (
@@ -174,17 +230,34 @@ export function HowItWorks() {
 
 export function SustainableBenefits() {
   const benefits = [
-    { icon: Leaf, title: 'Reduce Waste', description: 'Keep clothes out of landfills and extend their lifecycle' },
-    { icon: TrendingUp, title: 'Save Money', description: 'Refresh your wardrobe without spending a fortune' },
-    { icon: Star, title: 'Build Community', description: 'Connect with like-minded fashion enthusiasts' },
+    {
+      icon: Leaf,
+      title: 'Reduce Waste',
+      description: 'Keep clothes out of landfills and extend their lifecycle',
+    },
+    {
+      icon: TrendingUp,
+      title: 'Save Money',
+      description: 'Refresh your wardrobe without spending a fortune',
+    },
+    {
+      icon: Star,
+      title: 'Build Community',
+      description: 'Connect with like-minded fashion enthusiasts',
+    },
   ];
 
   return (
     <div className="mb-12">
-      <h2 className="text-2xl font-700 text-foreground mb-6 text-center">Sustainable Fashion Benefits</h2>
+      <h2 className="text-2xl font-700 text-foreground mb-6 text-center">
+        Sustainable Fashion Benefits
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {benefits.map((benefit) => (
-          <div key={benefit.title} className="bg-card rounded-2xl border border-border p-6 text-center">
+          <div
+            key={benefit.title}
+            className="bg-card rounded-2xl border border-border p-6 text-center"
+          >
             <div className="w-14 h-14 rounded-xl bg-positive/10 flex items-center justify-center mx-auto mb-4">
               <benefit.icon size={28} className="text-positive" />
             </div>
@@ -199,9 +272,24 @@ export function SustainableBenefits() {
 
 export function Testimonials() {
   const testimonials = [
-    { name: 'Sarah M.', location: 'Portland, OR', text: 'I&apos;ve swapped over 20 items and saved hundreds of dollars. The community is amazing!', avatar: 'SM' },
-    { name: 'James K.', location: 'Seattle, WA', text: 'Finally found a use for my old clothes. Met great people and got amazing pieces in return.', avatar: 'JK' },
-    { name: 'Emily R.', location: 'San Francisco, CA', text: 'Sustainable fashion made easy. Love that I can refresh my wardrobe guilt-free!', avatar: 'ER' },
+    {
+      name: 'Sarah M.',
+      location: 'Portland, OR',
+      text: 'I&apos;ve swapped over 20 items and saved hundreds of dollars. The community is amazing!',
+      avatar: 'SM',
+    },
+    {
+      name: 'James K.',
+      location: 'Seattle, WA',
+      text: 'Finally found a use for my old clothes. Met great people and got amazing pieces in return.',
+      avatar: 'JK',
+    },
+    {
+      name: 'Emily R.',
+      location: 'San Francisco, CA',
+      text: 'Sustainable fashion made easy. Love that I can refresh my wardrobe guilt-free!',
+      avatar: 'ER',
+    },
   ];
 
   return (

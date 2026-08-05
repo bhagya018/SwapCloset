@@ -19,7 +19,6 @@ interface AppImageProps {
   fallbackSrc?: string;
   loading?: 'lazy' | 'eager';
   unoptimized?: boolean;
-  [key: string]: any;
 }
 
 const AppImage = memo(function AppImage({
@@ -43,6 +42,7 @@ const AppImage = memo(function AppImage({
   const [imageSrc, setImageSrc] = useState(src);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const _props = props;
 
   const isExternalUrl = useMemo(
     () => typeof imageSrc === 'string' && imageSrc.startsWith('http'),
@@ -71,7 +71,7 @@ const AppImage = memo(function AppImage({
   }, [className, isLoading, onClick]);
 
   const imageProps = useMemo(() => {
-    const baseProps: any = {
+    const baseProps: Record<string, unknown> = {
       src: imageSrc,
       alt,
       className: imageClassName,
@@ -109,22 +109,46 @@ const AppImage = memo(function AppImage({
     onClick,
   ]);
 
+  const _imageProps = imageProps;
+
   if (fill) {
     return (
       <div className="relative" style={{ width: '100%', height: '100%' }}>
         <Image
-          {...imageProps}
+          src={imageSrc}
+          alt={alt || ''}
+          className={imageClassName}
+          quality={quality}
+          placeholder={placeholder}
+          blurDataURL={blurDataURL}
+          unoptimized={resolvedUnoptimized}
+          onError={handleError}
+          onLoad={handleLoad}
+          onClick={onClick}
           fill
           sizes={sizes || '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
           style={{ objectFit: 'cover' }}
-          {...props}
         />
       </div>
     );
   }
 
   return (
-    <Image {...imageProps} width={width || 400} height={height || 300} sizes={sizes} {...props} />
+    <Image
+      src={imageSrc}
+      alt={alt || ''}
+      className={imageClassName}
+      quality={quality}
+      placeholder={placeholder}
+      blurDataURL={blurDataURL}
+      unoptimized={resolvedUnoptimized}
+      onError={handleError}
+      onLoad={handleLoad}
+      onClick={onClick}
+      width={width || 400}
+      height={height || 300}
+      sizes={sizes}
+    />
   );
 });
 
